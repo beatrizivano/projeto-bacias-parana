@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging, logs, and temporary files
+build/
+dist/
+*.egg-info/
+pip-log.txt
+
+# Unit test / coverage reports
+htmlcov/
+.pytest_cache/
+.cache
+
+# Django / Flask / Celery
+local_settings.py
+db.sqlite3
+instance/
+celerybeat-schedule
+
+#Fasta files
+src/data/final/*
+src/data/interim/*
+src/data/raw/fasta/*
+
+# Environments & Virtual environments
+.env
+.venv
+env/
+venv/
+
+# IDEs & Editors
+.idea/
+.vscode/
+
