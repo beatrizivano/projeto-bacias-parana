@@ -1,28 +1,40 @@
 from pathlib import Path
 
-GENE_FILE_MAP = {
-    "12s": ["iguacu12s_1.fasta", "iguacu12s_2.fasta", "iguacu12s_3.fasta"],
-    "16s": ["iguacu16s_1.fasta", "iguacu16s_2.fasta", "iguacu16s_3.fasta"],
-    "COI": ["iguacuCOI_1.fasta", "iguacuCOI_2.fasta", "iguacuCOI_3.fasta", "iguacuCOI_4.fasta", "iguacuCOI_5.fasta", "iguacuCOI_6.fasta", "iguacuCOI_7.fasta", "iguacuCOI_8.fasta"]
+# GENE_FILE_MAP = {
+#     "12s": ["iguacu12s_1.fasta", "iguacu12s_2.fasta", "iguacu12s_3.fasta"],
+#     "16s": ["iguacu16s_1.fasta", "iguacu16s_2.fasta", "iguacu16s_3.fasta"],
+#     "COI": ["iguacuCOI_1.fasta", "iguacuCOI_2.fasta", "iguacuCOI_3.fasta", "iguacuCOI_4.fasta", "iguacuCOI_5.fasta", "iguacuCOI_6.fasta", "iguacuCOI_7.fasta", "iguacuCOI_8.fasta"]
+# }
+
+GENE_QUERIES = {
+    '12S': ' AND 12S',
+    '16S': ' AND 16S',
+    'COI': ' AND (COI OR COX1 OR CO1 OR cytochrome c oxidase subunit I OR cytochrome oxidase subunit 1)'
 }
 
+#folders
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DATA_FOLDER = PROJECT_ROOT / "data"
-RAW_FOLDER = DATA_FOLDER / "raw"
-INTERIM_FOLDER = DATA_FOLDER / "interim"
-FINAL_FOLDER = DATA_FOLDER / "final"
-FASTA_FOLDER = PROJECT_ROOT / RAW_FOLDER / "fasta"
-VALID_NAMES = RAW_FOLDER / "valid_names.csv"
-ACCESSION_GENE_CSV = INTERIM_FOLDER / "accession_gene.csv"
-GENBANK_RECORDS = INTERIM_FOLDER / "genbank_records.gb"
-PARSED_GB_RECS = INTERIM_FOLDER / "parsed_gb_recs.csv"
-RECONCILED_TAXONOMY = INTERIM_FOLDER / "reconciled_taxonomy.csv"
-REVISIT_RECS = INTERIM_FOLDER / "revisit_recs.csv"
-RELIABILITY_CLASS = FINAL_FOLDER / "reliability_class.csv"
-SUMMARY = FINAL_FOLDER / "summary.xlsx"
-EXPECTED_QUALIFIERS = ["collection_date", "isolate", "db_xref", "geo_loc_name", "lat_lon", "specimen_voucher"]
-ADDRESSES = INTERIM_FOLDER / "addresses.csv"
+DATA = PROJECT_ROOT / "data"
+RAW = DATA / "raw"
+INTERIM = DATA / "interim"
+FINAL = DATA / "final"
+QUERIES = RAW / "queries"
 
+#files
+VALID_NAMES = RAW / "valid_names.csv"
+ACCESSION_GENE_CSV = INTERIM / "accession_gene.csv"
+GENBANK_RECORDS = INTERIM / "genbank_records.gb"
+PARSED_GB_RECS = INTERIM / "parsed_gb_recs.csv"
+RECONCILED_TAXONOMY = INTERIM / "reconciled_taxonomy.csv"
+REVISIT_RECS = INTERIM / "revisit_recs.csv"
+ADDRESSES = INTERIM / "addresses.csv"
+RELIABILITY_CLASS = FINAL / "reliability_class.csv"
+SUMMARY = FINAL / "summary.xlsx"
+
+#genbank qualifiers
+EXPECTED_QUALIFIERS = ["collection_date", "isolate", "db_xref", "geo_loc_name", "lat_lon", "specimen_voucher"]
+
+#location info
 LOCATIONS = {
     "countries": ['brasil', 'brazil', 'br'],
     "states": ['parana'],

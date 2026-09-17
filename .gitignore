@@ -23,7 +23,7 @@ celerybeat-schedule
 #Fasta files
 src/data/final/*
 src/data/interim/*
-src/data/raw/fasta/*
+src/data/raw/queries/*
 
 # Environments & Virtual environments
 .env
