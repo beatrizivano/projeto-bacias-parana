@@ -1,15 +1,19 @@
 from Bio import Entrez
-from config.settings import ACCESSION_GENE_CSV, GENBANK_RECORDS, EMAIL, API_KEY
+from config.settings import ACCESSION_GENE_CSV, GENBANK_RECORDS
 import csv
 import http
+import os
+from dotenv import load_dotenv
 
-Entrez.email = EMAIL
-Entrez.api = API_KEY
+load_dotenv()
+
+Entrez.email = os.getenv("EMAIL")
+Entrez.api = os.getenv("API_KEY")
 accessions = []
 chunk_size = 200
 
-with open(ACCESSION_GENE_CSV, 'r', newline='') as csvfile:
-    reader = csv.DictReader(csvfile)
+with open(ACCESSION_GENE_CSV, 'r', newline='') as f:
+    reader = csv.DictReader(f)
     for row in reader:
         accessions.append(row['accession'])
 

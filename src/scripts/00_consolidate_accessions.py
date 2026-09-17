@@ -1,15 +1,49 @@
 import csv
-from Bio import SeqIO
-from config.settings import GENE_FILE_MAP, FASTA_FOLDER, ACCESSION_GENE_CSV
+import requests
+from config.settings import QUERIES, ACCESSION_GENE_CSV, GENE_QUERIES
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+queries = {}
+for file_path in QUERIES.iterdir():
+    if file_path.is_file():
+        river = file_path.stem
+        with file_path.open("r", encoding="utf-8") as file:
+            query = file.read()
+
+            for gene, geneQuery in GENE_QUERIES.items():
+                queries.setdefault(river, {})[gene] = query + geneQuery
+
+url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+
+params = {
+    "email": os.getenv("EMAIL"),
+    "apikey": os.getenv("API_KEY"),
+    "retmax": 1000000000,
+    "db": "nucleotide",
+    "retmode": "json",
+    "idtype": "acc"
+}
 
 results = []
-for gene, file_list in GENE_FILE_MAP.items():
-    for filename in file_list:
-        for seq_rec in SeqIO.parse(FASTA_FOLDER / filename, "fasta"):
-            results.append({"accession": seq_rec.id, "source_gene": gene})
+for river, genes in queries.items():
+    for gene, query in genes.items():
+        req = requests.post(url, data=params | { "term": query })
+        res = req.json().get("esearchresult")
+        ids = res.get("idlist", None)
 
-with open(ACCESSION_GENE_CSV,'w', newline='') as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=["accession", "gene"])
+        if ids is not None:
+            for id in ids:
+                results.append({
+                    "accession": id,
+                    "gene": gene,
+                    "river": river
+                })
+fieldnames = results[0].keys()
+
+with open(ACCESSION_GENE_CSV, 'w', newline="") as outfile:
+    writer = csv.DictWriter(outfile, fieldnames=fieldnames,  restval='')
     writer.writeheader()
-    for row in results:
-        writer.writerow({"accession": row["accession"], "gene": row["source_gene"]})
+    writer.writerows(results)
