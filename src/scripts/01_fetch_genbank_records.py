@@ -1,9 +1,9 @@
+from dotenv import load_dotenv
 from Bio import Entrez
 from config.settings import ACCESSION_GENE_CSV, GENBANK_RECORDS
 import csv
 import http
 import os
-from dotenv import load_dotenv
 
 load_dotenv()
 

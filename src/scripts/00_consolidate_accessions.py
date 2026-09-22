@@ -1,6 +1,7 @@
 import csv
 import requests
-from config.settings import QUERIES, ACCESSION_GENE_CSV, GENE_QUERIES
+from config.settings import QUERIES, ACCESSION_GENE_CSV
+from config.params import GENE_QUERIES
 import os
 from dotenv import load_dotenv
 
