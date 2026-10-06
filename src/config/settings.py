@@ -10,9 +10,9 @@ QUERIES = RAW / "queries"
 
 #files
 VALID_NAMES = RAW / "valid_names.csv"
-ACCESSION_GENE_CSV = INTERIM / "accession_gene.csv"
-GENBANK_RECORDS = INTERIM / "genbank_records.gb"
-PARSED_GB_RECS = INTERIM / "parsed_gb_recs.csv"
+ACCESSIONS = INTERIM / "accessions.json"
+ENTRIES = INTERIM / "entries.gb"
+RECORDS = INTERIM / "records.json"
 RECONCILED_TAXONOMY = INTERIM / "reconciled_taxonomy.csv"
 REVISIT_RECS = INTERIM / "revisit_recs.csv"
 ADDRESSES = INTERIM / "addresses.csv"

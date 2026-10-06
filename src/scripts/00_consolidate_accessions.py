@@ -1,9 +1,11 @@
 import csv
 import requests
-from config.settings import QUERIES, ACCESSION_GENE_CSV
+from config.settings import QUERIES, ACCESSIONS
 from config.params import GENE_QUERIES
 import os
 from dotenv import load_dotenv
+from collections import defaultdict
+import json
 
 load_dotenv()
 
@@ -28,7 +30,7 @@ params = {
     "idtype": "acc"
 }
 
-results = []
+records = defaultdict(lambda: { "genes": set(), "rivers": set() })
 for river, genes in queries.items():
     for gene, query in genes.items():
         req = requests.post(url, data=params | { "term": query })
@@ -37,14 +39,13 @@ for river, genes in queries.items():
 
         if ids is not None:
             for id in ids:
-                results.append({
-                    "accession": id,
-                    "gene": gene,
-                    "river": river
-                })
-fieldnames = results[0].keys()
+                records[id]["genes"].add(gene)
+                records[id]["rivers"].add(river)
 
-with open(ACCESSION_GENE_CSV, 'w', newline="") as outfile:
-    writer = csv.DictWriter(outfile, fieldnames=fieldnames,  restval='')
-    writer.writeheader()
-    writer.writerows(results)
+out = {
+    acc: {"genes": sorted(v["genes"]), "rivers": sorted(v["rivers"])}
+    for acc, v in records.items()
+}        
+
+with open(ACCESSIONS, 'w') as f:
+    json.dump(out, f, indent=2)

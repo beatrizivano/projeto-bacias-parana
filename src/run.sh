@@ -10,7 +10,7 @@ run_stage() {
 }
 
 run_stage "stage 00: consolidating accessions" "scripts/00_consolidate_accessions.py"
-run_stage "stage 01: fetching GB records" "scripts/01_fetch_genbank_records.py"
+run_stage "stage 01: fetching GB entries" "scripts/01_fetch_entries.py"
 run_stage "stage 02: parsing metadata" "scripts/02_parse_metadata.py"
 run_stage "stage 03: reconciling taxonomy" "scripts/03_reconcile_taxonomy.py"
 run_stage "stage 04: classifying reliability and relevance" "scripts/04_classify_reliability_relevance.py"

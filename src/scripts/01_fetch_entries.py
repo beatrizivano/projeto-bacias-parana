@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from Bio import Entrez
-from config.settings import ACCESSION_GENE_CSV, GENBANK_RECORDS
-import csv
+from config.settings import ACCESSIONS, ENTRIES
+import json
 import http
 import os
 
@@ -9,15 +9,13 @@ load_dotenv()
 
 Entrez.email = os.getenv("EMAIL")
 Entrez.api = os.getenv("API_KEY")
-accessions = []
 chunk_size = 200
 
-with open(ACCESSION_GENE_CSV, 'r', newline='') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        accessions.append(row['accession'])
+with open(ACCESSIONS) as f:
+    data = json.load(f)
+    accessions = list(data.keys())
 
-with open(GENBANK_RECORDS, 'w') as outfile:
+with open(ENTRIES, 'w') as f:
     for i in range(0, len(accessions), chunk_size):
         chunk = accessions[i : i + chunk_size]
         ids = ",".join(chunk)
@@ -27,7 +25,7 @@ with open(GENBANK_RECORDS, 'w') as outfile:
             try:
                 handle = Entrez.efetch(db="nucleotide", id=ids, rettype="gb", retmode="text")
                 content = handle.read()
-                outfile.write(content)
+                f.write(content)
             except http.client.IncompleteRead:
                 attempts += 1
             finally:
